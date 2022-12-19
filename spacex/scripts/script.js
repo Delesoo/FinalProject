@@ -1,5 +1,5 @@
 let activeBtn = "Amazon.com";
-const buttons = document.getElementsByTagName("button");
+const buttons = document.getElementsByName("gilakebi");
 const inputbutton = document.getElementById("boxes");
 
 class dataItem {
@@ -61,4 +61,32 @@ inputbutton.addEventListener("keypress", (e) => {
 });
 
 
-window.onload(setActive(document.getElementById("Amazon.com")));
+function addListenersFunc(){
+    const listArr = ["Amazon.com", "American Express", "Walmart", "Apple"];
+
+    listArr.forEach((elem)=>{
+        document.getElementById(elem).addEventListener("click", (e)=>{
+            activeBtn = e.target.id;
+            let btn = document.getElementById(activeBtn);
+            for(let i=0;i<buttons.length; i++){
+                buttons[i].className = 'notActive';
+            };
+            btn.className = "active";
+
+            fetch("https://bitbucket.org/hpstore/spacex-cargo-planner/raw/204125d74487b1423bbf0453f4dcb53a2161353b/shipments.json")
+    .then(responseObj => responseObj.json(responseObj))
+    .then(responseObjData => {
+        const foundEl = responseObjData.find((el) => el.name === activeBtn);
+        let dataClass = new dataItem(foundEl.id,foundEl.name,foundEl.email,foundEl.boxes);
+        dataClass.addToScreenData();
+    })
+    .catch(fetchError => console.log(fetchError));
+
+        })
+    })
+}
+
+addListenersFunc();
+
+
+window.onloadsetActive = (document.getElementById("Amazon.com"));
